@@ -1,32 +1,63 @@
 #Portfoli project - simple budget calculator
 
-income = input("What is your monthly income after taxes? ")
-housing = input("How much do you spend on housing per month? ")
+income = int(input("What is your monthly income after taxes? "))
+housing = int(input("How much do you spend on housing per month? "))
 
-def my_budget(income, housing):
-    if (housing <= (income * 0.51) and housing > 0):
-        needs = (income * 0.6) - housing
-        save = income * .2
-        extra = income * .2
-        return needs, save, extra
-    elif (housing > (income * 0.51) and housing < (income * 0.8)):
-        needs = (income * 0.8) - housing
-        save = income * .1
-        extra = income * .1
-        return needs, save, extra
-    else:
-        needs = income - housing
-        save = 0
-        extra = 0
-        return needs, save, extra
+class Budget:
+    def __init__(self, income, housing):
+        self.income = income
+        self.housing = housing
+    
+    def needs_budget(self):
+        if (housing <= (income * 0.51) and housing >= 0):
+            need = (income * 0.6) - housing
+        elif (housing > (income * 0.51) and housing < (income * 0.8)):
+            need = (income * 0.8) - housing
+        else:
+            need = (income * .95) - housing
+        return need
+    
+    def save_spend(self):
+        if housing <= (income * 0.6):
+            save = income * 0.2
+            extra = income * 0.2
+        elif (housing <= (income * 0.8) and housing >= (income * 0.61)):
+            save = income * 0.1
+            extra = income * 0.1
+        else:
+            save = 0
+            extra = income - housing - Budget.needs_budget(self)
+        return save, extra
 
-budget = my_budget(income, housing)
+class SuperSaver(Budget):    
+    def save_spend(self):
+        super().save_spend()
+        if (housing <= income * .6):
+            save = income * 0.3
+            extra = income * 0.1
+        elif (housing <= (income * 0.8) and housing >= int(income * 0.61)):
+            save = income * 0.2
+            extra = 0
+        else:
+            save = income - housing - Budget.needs_budget(self)
+            extra = 0
+        return save, extra
 
+a_budget = Budget(income, housing)
+spending = a_budget.save_spend()
+print("On a regular budget...")
 print("Your needs budget, after housing costs, is: ")
-print(budget[0])
-
+print(a_budget.needs_budget())
 print("Your savings goal per month is: ")
-print(budget[1])
-
+print(spending[0])
 print("Your disposable budget is: ")
-print(budget[2])
+print(spending[1])
+
+s_budget = SuperSaver(income, housing)
+saving = s_budget.save_spend()
+print("If you're looking to save more...")
+print("Your savings goal per month is: ")
+print(saving[0])
+print("Your disposable budget is: ")
+print(saving[1])
+
