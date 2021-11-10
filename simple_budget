@@ -1,0 +1,14 @@
+#Portfoli project - simple budget calculator
+
+income = input("What is your monthly income after taxes? ")
+housing = input("How much do you spend on housing per month? ")
+
+def needs_budget(income, housing):
+    needs = (income * 0.6) - housing
+    return needs
+
+print("Your basic needs budget, after housing, is: ")
+print(needs_budget(income, housing))
+
+print("Your savings goal should be 20% of your income: ")
+print((income * 0.2))
