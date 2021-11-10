@@ -3,26 +3,30 @@
 income = input("What is your monthly income after taxes? ")
 housing = input("How much do you spend on housing per month? ")
 
-def need_budget(income, housing):
-    if (housing < (income * 0.51) and housing > 0):
+def my_budget(income, housing):
+    if (housing <= (income * 0.51) and housing > 0):
         needs = (income * 0.6) - housing
-        return needs
+        save = income * .2
+        extra = income * .2
+        return needs, save, extra
     elif (housing > (income * 0.51) and housing < (income * 0.8)):
         needs = (income * 0.8) - housing
-        return needs
+        save = income * .1
+        extra = income * .1
+        return needs, save, extra
     else:
-        print("Your housing cost is too high in relation to your income!")
+        needs = income - housing
+        save = 0
+        extra = 0
+        return needs, save, extra
 
-print("Your basic needs budget, after housing, is: ")
-print(need_budget(income, housing))
+budget = my_budget(income, housing)
 
-def savings_goal(income):
-    save = income * 0.2
-    return save
+print("Your needs budget, after housing costs, is: ")
+print(budget[0])
 
-print("Your savings goal should be 20% of your income: ")
-print(savings_goal(income))
+print("Your savings goal per month is: ")
+print(budget[1])
 
-extra = income - housing - need_budget(income, housing) - savings_goal(income)
-
-print("You'll have $" + str(extra) + " left each month to spend as you wish!")
+print("Your disposable budget is: ")
+print(budget[2])
